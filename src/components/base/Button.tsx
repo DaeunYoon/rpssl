@@ -9,7 +9,7 @@ interface ButtonProps {
 
 const styles: Record<Exclude<ButtonProps['variant'], undefined>, string> = {
   primary: 'bg-blue-500 text-white hover:bg-blue-600',
-  secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300',
+  secondary: 'bg-neutral-300 text-neutral-900 hover:bg-neutral-400',
 };
 
 export default function Button({
@@ -24,6 +24,9 @@ export default function Button({
     'px-4 py-2 rounded-lg hover:bg-opacity-80',
     styles[variant],
     className,
+    {
+      'cursor-not-allowed opacity-50 hover:bg-opacity-50': props.disabled,
+    },
   );
 
   return (
