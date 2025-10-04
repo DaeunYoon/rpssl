@@ -124,7 +124,7 @@ export default function GameCreateForm({
                 disabled={!canSubmit || isSubmitting}
                 type="submit"
               >
-                Create New Game
+                {isSubmitting ? 'Creating New Game...' : 'Create New Game'}
               </Button>
               <div className="text-sm text-neutral-600 mt-2 border border-neutral-300 rounded-lg p-2">
                 <p>

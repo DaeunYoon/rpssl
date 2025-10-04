@@ -2,8 +2,7 @@ import GameCreateContainer from '@/components//Game/CreateContainer';
 import Button from '@/components/base/Button';
 import Card from '@/components/base/Card';
 import Input from '@/components/base/Input';
-import Footer from '@/components/layout/Footer';
-import Header from '@/components/layout/Header';
+import Layout from '@/components/layout';
 import {
   Disclosure,
   DisclosureButton,
@@ -13,9 +12,7 @@ import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
   return (
-    <div className="w-full min-h-screen bg-blue-200 flex flex-col gap-y-8 justify-between">
-      <Header />
-
+    <Layout>
       <main className="mx-8">
         <div className="max-w-6xl mx-auto flex flex-col gap-y-8 flex-1">
           <Card className="space-y-4 w-full">
@@ -81,9 +78,7 @@ const Home: NextPage = () => {
           </Card>
         </div>
       </main>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 

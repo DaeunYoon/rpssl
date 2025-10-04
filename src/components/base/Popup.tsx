@@ -21,7 +21,7 @@ export default function Popup({
   if (isOpen === false) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-10">
       <div
         className={cn(
           'bg-white pt-6 p-4 rounded shadow-md w-72 relative',
