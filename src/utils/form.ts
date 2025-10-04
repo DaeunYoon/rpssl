@@ -1,4 +1,4 @@
-import { isAddress } from 'viem';
+import { isAddress, parseEther } from 'viem';
 
 export function getAddressError(address: string): string | undefined {
   const trimmed = address.trim();
@@ -7,9 +7,20 @@ export function getAddressError(address: string): string | undefined {
   return undefined;
 }
 
-export function getAmountError(amount: number): string | undefined {
+interface GetAmountErrorOptions {
+  max?: bigint;
+}
+export function getAmountError(
+  amount: number,
+  options?: GetAmountErrorOptions,
+): string | undefined {
   if (isNaN(amount) || amount <= 0) {
     return 'Amount must be a positive number';
+  }
+
+  const amountInBigInt = parseEther(amount.toString());
+  if (options?.max && amountInBigInt > options.max) {
+    return 'Amount cannot be bigger than current balance';
   }
   return undefined;
 }

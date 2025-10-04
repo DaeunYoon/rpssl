@@ -1,9 +1,9 @@
 import { RSPAbi, RSPByteCode } from '@/contracts/RSP';
-import { createUint256Salt } from '@/utils';
+import { createHashedChoice } from '@/utils';
 import { GameChoice } from '@/utils/constants';
 import { config } from '@/wagmi';
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
-import { Address, encodePacked, keccak256, parseEther } from 'viem';
+import { Address, parseEther } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
 
 export interface DeployRSPVariables {
@@ -79,13 +79,4 @@ export function useDeployRSP(options?: UseDeployRSPOptions) {
     deployRSP: mutate,
     deployRSPAsync: mutateAsync,
   };
-}
-
-function createHashedChoice(choice: GameChoice) {
-  const salt = createUint256Salt();
-  const hashedChoice = keccak256(
-    encodePacked(['uint8', 'uint256'], [choice, salt]),
-  );
-
-  return { hashedChoice, salt };
 }

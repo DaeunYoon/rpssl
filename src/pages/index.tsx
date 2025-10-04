@@ -34,6 +34,9 @@ const Home: NextPage = () => {
           </Card>
 
           <Card className="flex flex-col gap-8 items-start">
+            <h3 className="font-semibold text-xl">
+              Do you want to know more about this game? 🤔
+            </h3>
             <div>
               <Disclosure>
                 <DisclosureButton className="text-lg font-medium hover:underline">

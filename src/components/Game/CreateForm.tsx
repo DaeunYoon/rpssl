@@ -1,9 +1,11 @@
 import Button from '@/components/base/Button';
 import type { DeployRSPVariables } from '@/hooks/useDeployRSP';
+import { useEstimateFeeDeployRSP } from '@/hooks/useEstimateFeeDeployRSP';
 import { GameChoice, gameChoiceOptions } from '@/utils/constants';
 import { getAddressError, getAmountError } from '@/utils/form';
 import { useForm } from '@tanstack/react-form';
-import { isAddress } from 'viem';
+import { formatEther, isAddress } from 'viem';
+import { useAccount, useBalance } from 'wagmi';
 import FormInput from '../base/form/Input';
 import FormSelect from '../base/form/Select';
 
@@ -23,7 +25,7 @@ export default function GameCreateForm({
       if (!isAddress(trimmedAddress)) {
         return new Error('Invalid address');
       }
-      if (getAmountError(value.amount)) {
+      if (getCurrentUserAmountError(value.amount)) {
         return new Error('Invalid amount');
       }
 
@@ -34,6 +36,27 @@ export default function GameCreateForm({
       });
     },
   });
+
+  const { address } = useAccount();
+  const { data: balance, isLoading: isLoadingBalance } = useBalance({
+    address,
+  });
+
+  function getCurrentUserAmountError(value: number) {
+    return getAmountError(value, { max: balance?.value });
+  }
+
+  const { data: estimatedFee, isLoading: isEstimatingFee } =
+    useEstimateFeeDeployRSP();
+
+  function getAmountInputInfoText() {
+    if (isLoadingBalance) return 'Loading balance...';
+
+    const currentBalance = balance?.value
+      ? `${formatEther(balance.value)}  ${balance.symbol}`
+      : 0;
+    return `Current balance : ${currentBalance}`;
+  }
 
   return (
     <form
@@ -56,8 +79,9 @@ export default function GameCreateForm({
         />
         <form.Field
           name="opponentAddress"
+          asyncDebounceMs={500}
           validators={{
-            onChangeAsyncDebounceMs: 500,
+            onBlur: ({ value }) => getAddressError(value),
             onChangeAsync: ({ value }) => getAddressError(value),
           }}
         >
@@ -72,9 +96,10 @@ export default function GameCreateForm({
 
         <form.Field
           name="amount"
+          asyncDebounceMs={500}
           validators={{
-            onChangeAsyncDebounceMs: 500,
-            onChangeAsync: ({ value }) => getAmountError(value),
+            onBlur: ({ value }) => getCurrentUserAmountError(value),
+            onChangeAsync: ({ value }) => getCurrentUserAmountError(value),
           }}
         >
           {(field) => (
@@ -84,6 +109,7 @@ export default function GameCreateForm({
               step="0.01"
               field={field}
               placeholder="0.05"
+              infoText={getAmountInputInfoText()}
             />
           )}
         </form.Field>
@@ -91,13 +117,38 @@ export default function GameCreateForm({
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
-            <Button
-              variant="primary"
-              disabled={!canSubmit || isSubmitting}
-              type="submit"
-            >
-              Create New Game
-            </Button>
+            <div>
+              <Button
+                className="w-full"
+                variant="primary"
+                disabled={!canSubmit || isSubmitting}
+                type="submit"
+              >
+                Create New Game
+              </Button>
+              <div className="text-sm text-neutral-600 mt-2 border border-neutral-300 rounded-lg p-2">
+                <p>
+                  <span className="mr-1">ℹ️</span> Deploying a game will create
+                  a smart contract on the blockchain, which requires paying a
+                  gas fee. If your wallet does not have enough ETH to cover this
+                  fee, the transaction will fail.
+                </p>
+                <p>
+                  {isEstimatingFee ? (
+                    <span>Estimating gas fee...</span>
+                  ) : estimatedFee === undefined ? (
+                    <span>Estimating gas fee is currently unavailable.</span>
+                  ) : (
+                    <span>
+                      Estimated gas fee to deploy the game:&nbsp;
+                      <span className="font-semibold">
+                        {formatEther(estimatedFee)} ETH
+                      </span>
+                    </span>
+                  )}
+                </p>
+              </div>
+            </div>
           )}
         />
       </div>

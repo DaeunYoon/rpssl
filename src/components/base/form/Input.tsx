@@ -6,9 +6,15 @@ import FormLabel from './Label';
 interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   field: AnyFieldApi;
   label?: string;
+  infoText?: string;
 }
 
-export default function FormInput({ field, label, ...props }: FormInputProps) {
+export default function FormInput({
+  field,
+  label,
+  infoText,
+  ...props
+}: FormInputProps) {
   return (
     <div>
       {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}
@@ -19,6 +25,7 @@ export default function FormInput({ field, label, ...props }: FormInputProps) {
         onBlur={field.handleBlur}
         {...props}
       />
+      {infoText && <p className="mt-1 text-sm text-neutral-600">{infoText}</p>}
       <FormErrorMessage errors={field.state.meta.errors} />
     </div>
   );
