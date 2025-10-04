@@ -1,8 +1,23 @@
-import { isAddress, parseEther } from 'viem';
+import { isAddress, parseEther, zeroAddress } from 'viem';
 
-export function getAddressError(address: string): string | undefined {
+interface GetAddressErrorOptions {
+  required?: boolean;
+  notZero?: boolean;
+}
+export function getAddressError(
+  address: string,
+  options: GetAddressErrorOptions = {},
+): string | undefined {
   const trimmed = address.trim();
-  if (!trimmed) return 'An opponent address is required';
+
+  if (trimmed === '') {
+    if (options.required) return 'Address is required';
+    return undefined;
+  }
+  if (options.notZero && trimmed === zeroAddress) {
+    return 'Address cannot be zero address';
+  }
+
   if (!isAddress(trimmed)) return 'Address is not correct format';
   return undefined;
 }

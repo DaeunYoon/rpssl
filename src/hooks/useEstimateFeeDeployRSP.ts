@@ -9,6 +9,7 @@ import {
   zeroAddress,
   zeroHash,
 } from 'viem';
+import { sepolia } from 'viem/chains';
 import { usePublicClient } from 'wagmi';
 
 export interface DeployRSPVariables {
@@ -33,13 +34,23 @@ export function useEstimateFeeDeployRSP() {
         args: [zeroHash, zeroAddress],
       });
 
-      const gas = await publicClient.estimateGas({
+      const gasUnit = await publicClient.estimateGas({
+        account: zeroAddress,
         data: deployData,
         value: parseEther('0.01'),
         ...config,
       });
 
-      return gas;
+      let feePerGas;
+      if (publicClient.chain.id === sepolia.id) {
+        // Gas Estimation on Sepolia isn't correct, so using a fixed value here
+        feePerGas = BigInt(1_500_000_000); // 1.5 gwei
+      } else {
+        const maxPriorityFeePerGas = await publicClient.estimateFeesPerGas();
+        feePerGas = maxPriorityFeePerGas.maxFeePerGas;
+      }
+
+      return gasUnit * feePerGas;
     },
     enabled: Boolean(publicClient),
   });

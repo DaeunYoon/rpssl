@@ -22,7 +22,11 @@ export default function GameCreateForm({
     },
     onSubmit: ({ value }) => {
       const trimmedAddress = value.opponentAddress.trim();
-      if (!isAddress(trimmedAddress)) {
+      if (
+        // Checking isAddress separately to let ts know address type correctly
+        !isAddress(trimmedAddress) ||
+        getOpponentAddressError(trimmedAddress)
+      ) {
         return new Error('Invalid address');
       }
       if (getCurrentUserAmountError(value.amount)) {
@@ -44,6 +48,10 @@ export default function GameCreateForm({
 
   function getCurrentUserAmountError(value: number) {
     return getAmountError(value, { max: balance?.value });
+  }
+
+  function getOpponentAddressError(address: string): string | undefined {
+    return getAddressError(address, { required: true, notZero: true });
   }
 
   const { data: estimatedFee, isLoading: isEstimatingFee } =
@@ -81,8 +89,8 @@ export default function GameCreateForm({
           name="opponentAddress"
           asyncDebounceMs={500}
           validators={{
-            onBlur: ({ value }) => getAddressError(value),
-            onChangeAsync: ({ value }) => getAddressError(value),
+            onBlur: ({ value }) => getOpponentAddressError(value),
+            onChangeAsync: ({ value }) => getOpponentAddressError(value),
           }}
         >
           {(field) => (

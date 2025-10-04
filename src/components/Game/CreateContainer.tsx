@@ -1,5 +1,6 @@
 import { DeployRSPResult, useDeployRSP } from '@/hooks/useDeployRSP';
 import { useState } from 'react';
+import { useAccount } from 'wagmi';
 import GameCreateFailedPopup from './CreateFailedPopup';
 import GameCreateForm from './CreateForm';
 import GameCreateSuccessPopup from './CreateSuccessPopup';
@@ -13,7 +14,6 @@ export default function CreateContainer() {
 
   const { deployRSPAsync } = useDeployRSP({
     onSuccess(data) {
-      console.log('onSuccess', data);
       setDeploySuccessPopupPayload(data);
     },
   });
@@ -24,6 +24,15 @@ export default function CreateContainer() {
     } catch (error) {
       setDeployErrorPopupPayload({ error });
     }
+  }
+
+  const { isConnected } = useAccount();
+  if (!isConnected) {
+    return (
+      <div className="text-center text-neutral-600">
+        Please connect your wallet to create a game.
+      </div>
+    );
   }
 
   return (
