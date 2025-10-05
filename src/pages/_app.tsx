@@ -4,7 +4,7 @@ import '../styles/globals.css';
 
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from 'react-hot-toast';
+import { ToastContainer } from 'react-toastify';
 import { WagmiProvider } from 'wagmi';
 
 import { config } from '../wagmi';
@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={client}>
         <RainbowKitProvider>
           <Component {...pageProps} />
-          <Toaster containerClassName="break-all" />
+          <ToastContainer position="top-center" />
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

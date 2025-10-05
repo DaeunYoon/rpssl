@@ -9,7 +9,7 @@ import {
 } from '@/utils/constants';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 import { formatEther } from 'viem';
 import { useAccount } from 'wagmi';
 import Button from '../base/Button';
@@ -32,7 +32,7 @@ export default function GamePlaySelectGameMove({
   const { writeContract, isPending } = useWriteContract({
     async onSuccess(data) {
       toast.success(`Move selected successfully! Transaction Hash: ${data}`, {
-        duration: 5000,
+        autoClose: false,
       });
 
       await queryClient.invalidateQueries({
@@ -40,7 +40,9 @@ export default function GamePlaySelectGameMove({
       });
     },
     onError(error) {
-      toast.error(`Failed to select move: ${error.message}`);
+      toast.error(`Failed to select move: ${error.message}`, {
+        autoClose: false,
+      });
     },
   });
 

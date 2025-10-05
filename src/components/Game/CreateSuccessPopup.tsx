@@ -1,7 +1,7 @@
 import type { DeployRSPResult } from '@/hooks/useDeployRSP';
 import { GameMove } from '@/utils/constants';
 import { useRouter } from 'next/router';
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 import type { Address } from 'viem';
 import Button from '../base/Button';
 import Card from '../base/Card';

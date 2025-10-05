@@ -11,7 +11,7 @@ import { getBigIntError } from '@/utils/form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 import { Hash } from 'viem';
 import Button from '../base/Button';
 import FormInput from '../base/form/Input';
@@ -41,7 +41,9 @@ export default function GamePlaySolveResult({
       });
     },
     onError(error) {
-      toast.error(`Failed to solve the game: ${error.message}`);
+      toast.error(`Failed to solve the game: ${error.message}`, {
+        autoClose: false,
+      });
     },
   });
 
