@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={client}>
         <RainbowKitProvider>
           <Component {...pageProps} />
-          <Toaster />
+          <Toaster containerClassName="break-all" />
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

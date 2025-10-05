@@ -65,7 +65,8 @@ const Home: NextPage = () => {
                 <p>
                   A player creates a RPSSL game by deploying a smart contract.
                   The smart contract manages the game state and ensures fair
-                  play.
+                  play. We support you to create a game or search an existing
+                  game on <b>our platform</b>.
                 </p>
               </DisclosurePanel>
             </Disclosure>

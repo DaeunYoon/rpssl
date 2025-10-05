@@ -28,3 +28,14 @@ export const gameChoiceOptions = (
     value: value,
   }),
 );
+
+export enum GameStatus {
+  Created,
+  C2Selected,
+}
+
+export enum GamePlayer {
+  Null,
+  Player1,
+  Player2,
+}

@@ -16,11 +16,15 @@ export interface RSPState {
   balance: bigint;
 }
 
+export function getRSPStateQueryKey(address: Address | undefined) {
+  return ['rspState', address] as const;
+}
+
 export function useRSPState(address?: Address) {
   const publicClient = usePublicClient();
 
   const rspState = useQuery({
-    queryKey: ['rspState', address],
+    queryKey: getRSPStateQueryKey(address),
     queryFn: async () => {
       if (!publicClient || !address) {
         return undefined;

@@ -61,7 +61,7 @@ export default function GameCreateForm({
     if (isLoadingBalance) return 'Loading balance...';
 
     const currentBalance = balance?.value
-      ? `${formatEther(balance.value)}  ${balance.symbol}`
+      ? `${formatEther(balance.value)} ${balance.symbol}`
       : 0;
     return `Current balance : ${currentBalance}`;
   }
