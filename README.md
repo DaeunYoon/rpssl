@@ -1,29 +1,34 @@
-This is a [RainbowKit](https://rainbowkit.com) + [wagmi](https://wagmi.sh) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-rainbowkit`](/packages/create-rainbowkit).
 
-## Getting Started
+# RPSSL: Blockchain Rock Paper Scissors Lizard Spock
 
-First, run the development server:
+RPSSL is a decentralized, on-chain implementation of Rock Paper Scissors Lizard Spock, built with Next.js and Solidity. Play with friends, stake ETH, and enjoy provably fair gameplay on the Sepolia testnet.
 
-```bash
-npm run dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Getting Started
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+1. **Install dependencies:**
+	```bash
+	pnpm install
+	```
 
-## Learn More
+2. **Set up environment variables:**
+	- Copy `.env.example` to `.env.local` and fill in the required variables 
 
-To learn more about this stack, take a look at the following resources:
+3. **Run the app locally:**
+	```bash
+	pnpm dev
+	```
 
-- [RainbowKit Documentation](https://rainbowkit.com) - Learn how to customize your wallet connection flow.
-- [wagmi Documentation](https://wagmi.sh) - Learn how to interact with Ethereum.
-- [Next.js Documentation](https://nextjs.org/docs) - Learn how to build a Next.js application.
+4. **Connect your wallet** (MetaMask, WalletConnect, etc.) and switch to the Sepolia testnet.
 
-You can check out [the RainbowKit GitHub repository](https://github.com/rainbow-me/rainbowkit) - your feedback and contributions are welcome!
+5. **Create or join a game** and play RPSSL on-chain!
 
-## Deploy on Vercel
+## 🛠 Tech Stack
+- Next.js & TypeScript
+- RainbowKit & Wagmi & viem
+- Tanstack React Query
+- Tailwind CSS
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Environment Variables
+- `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` (required)
+- `NEXT_PUBLIC_SEPOLIA_RPC_URL` (required)
