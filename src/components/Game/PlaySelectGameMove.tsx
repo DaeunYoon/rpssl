@@ -1,5 +1,6 @@
 import { RSPAbi } from '@/contracts/RSP';
 import { getRSPStateQueryKey, RSPState } from '@/hooks/useRSPState';
+import useWriteContract from '@/hooks/useWriteContract';
 import {
   GameMove,
   gameMoveOptions,
@@ -10,7 +11,7 @@ import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { formatEther } from 'viem';
-import { useAccount, useWriteContract } from 'wagmi';
+import { useAccount } from 'wagmi';
 import Button from '../base/Button';
 import FormCheckbox from '../base/form/Checkbox';
 import FormSelect from '../base/form/Select';
@@ -29,19 +30,17 @@ export default function GamePlaySelectGameMove({
   const queryClient = useQueryClient();
 
   const { writeContract, isPending } = useWriteContract({
-    mutation: {
-      async onSuccess(data) {
-        toast.success(`Move selected successfully! Transaction Hash: ${data}`, {
-          duration: 5000,
-        });
+    async onSuccess(data) {
+      toast.success(`Move selected successfully! Transaction Hash: ${data}`, {
+        duration: 5000,
+      });
 
-        await queryClient.invalidateQueries({
-          queryKey: getRSPStateQueryKey(state.address),
-        });
-      },
-      onError(error) {
-        toast.error(`Failed to select move: ${error.message}`);
-      },
+      await queryClient.invalidateQueries({
+        queryKey: getRSPStateQueryKey(state.address),
+      });
+    },
+    onError(error) {
+      toast.error(`Failed to select move: ${error.message}`);
     },
   });
 

@@ -1,5 +1,6 @@
 import { RSPAbi } from '@/contracts/RSP';
 import { getRSPStateQueryKey, RSPState } from '@/hooks/useRSPState';
+import useWriteContract from '@/hooks/useWriteContract';
 import {
   GameMove,
   gameMoveOptions,
@@ -12,7 +13,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Hash } from 'viem';
-import { useWriteContract } from 'wagmi';
 import Button from '../base/Button';
 import FormInput from '../base/form/Input';
 import FormSelect from '../base/form/Select';
@@ -33,17 +33,15 @@ export default function GamePlaySolveResult({
   const queryClient = useQueryClient();
 
   const { writeContract, isPending } = useWriteContract({
-    mutation: {
-      async onSuccess(data) {
-        setSolveResultPayload(data);
+    async onSuccess(data) {
+      setSolveResultPayload(data);
 
-        await queryClient.invalidateQueries({
-          queryKey: getRSPStateQueryKey(state.address),
-        });
-      },
-      onError(error) {
-        toast.error(`Failed to solve the game: ${error.message}`);
-      },
+      await queryClient.invalidateQueries({
+        queryKey: getRSPStateQueryKey(state.address),
+      });
+    },
+    onError(error) {
+      toast.error(`Failed to solve the game: ${error.message}`);
     },
   });
 

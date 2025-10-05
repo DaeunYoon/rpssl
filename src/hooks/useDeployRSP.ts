@@ -4,7 +4,7 @@ import { GameMove } from '@/utils/constants';
 import { config } from '@/wagmi';
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { Address, parseEther } from 'viem';
-import { usePublicClient, useWalletClient } from 'wagmi';
+import { BaseError, usePublicClient, useWalletClient } from 'wagmi';
 
 export interface DeployRSPVariables {
   move: GameMove;
@@ -21,7 +21,7 @@ export interface DeployRSPResult {
 type UseDeployRSPOptions = Omit<
   UseMutationOptions<
     DeployRSPResult,
-    Error,
+    BaseError,
     DeployRSPVariables,
     DeployRSPResult
   >,
@@ -47,30 +47,26 @@ export function useDeployRSP(options?: UseDeployRSPOptions) {
       }
 
       const { hashedMove, salt } = createHashedMove(move);
-      try {
-        const deployHash = await walletClient.deployContract({
-          abi: RSPAbi,
-          bytecode: RSPByteCode,
-          args: [hashedMove, opponentAddress] as const,
-          value: parseEther(amount),
-          ...config,
+      const deployHash = await walletClient.deployContract({
+        abi: RSPAbi,
+        bytecode: RSPByteCode,
+        args: [hashedMove, opponentAddress] as const,
+        value: parseEther(amount),
+        ...config,
+      });
+
+      const receipt = await publicClient.waitForTransactionReceipt({
+        hash: deployHash,
+      });
+
+      const deployedContract = receipt.contractAddress;
+      if (!deployedContract) {
+        throw new Error('Contract not deployed', {
+          cause: `unexpected error happened, block hash of failed deploy: ${deployHash}`,
         });
-
-        const receipt = await publicClient.waitForTransactionReceipt({
-          hash: deployHash,
-        });
-
-        const deployedContract = receipt.contractAddress;
-        if (!deployedContract) {
-          throw new Error('Contract not deployed', {
-            cause: `unexpected error happened, block hash of failed deploy: ${deployHash}`,
-          });
-        }
-
-        return { deployedContract, salt, move };
-      } catch (e) {
-        throw new Error('Deployment failed', { cause: e });
       }
+
+      return { deployedContract, salt, move };
     },
     ...options,
   });

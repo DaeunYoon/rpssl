@@ -1,19 +1,22 @@
 import { RSPAbi } from '@/contracts/RSP';
 import { getRSPStateQueryKey, type RSPState } from '@/hooks/useRSPState';
+import useWriteContract from '@/hooks/useWriteContract';
 import { convertSecondsToMinutes } from '@/utils';
 import { GamePlayer, GameStatus } from '@/utils/constants';
 import { checkGameTimeOut } from '@/utils/game';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Address } from 'viem';
-import { Config, useWriteContract } from 'wagmi';
-import { WriteContractMutate } from 'wagmi/query';
 import Button from '../base/Button';
 
 interface GamePlayTimeOutProps {
   state: RSPState;
   currentPlayer: GamePlayer;
 }
+
+type WriteContractFunction = ReturnType<
+  typeof useWriteContract
+>['writeContract'];
 
 export default function GamePlayTimeOut({
   state,
@@ -25,20 +28,17 @@ export default function GamePlayTimeOut({
   const queryClient = useQueryClient();
 
   const { writeContract, isPending } = useWriteContract({
-    mutation: {
-      async onSuccess(data) {
-        toast.success(
-          `Time out called successfully! Transaction Hash: ${data}`,
-          { duration: 5000 },
-        );
+    async onSuccess(data) {
+      toast.success(`Time out called successfully! Transaction Hash: ${data}`, {
+        duration: 5000,
+      });
 
-        await queryClient.invalidateQueries({
-          queryKey: getRSPStateQueryKey(state.address),
-        });
-      },
-      onError(error) {
-        toast.error(`Failed to call time out: ${error.message}`);
-      },
+      await queryClient.invalidateQueries({
+        queryKey: getRSPStateQueryKey(state.address),
+      });
+    },
+    onError(error) {
+      toast.error(`Failed to call time out: ${error.message}`);
     },
   });
 
@@ -73,7 +73,7 @@ export default function GamePlayTimeOut({
 interface PlayerTimeOutProps {
   address: Address;
   currentGameStatus: GameStatus;
-  writeContract: WriteContractMutate<Config, unknown>;
+  writeContract: WriteContractFunction;
   isPending: boolean;
 }
 
