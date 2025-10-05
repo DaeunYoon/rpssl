@@ -36,5 +36,6 @@ RPSSL is a decentralized, on-chain implementation of Rock Paper Scissors Lizard 
 - `NEXT_PUBLIC_SEPOLIA_RPC_URL` (required)
 
 ## Note
+
 This app is running on [Ethereum Sepolia](https://sepolia.etherscan.io/) and doesn't support multi-chain.
 For the best experience, please enter with chrome browser!
