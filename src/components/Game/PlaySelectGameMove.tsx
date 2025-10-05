@@ -28,7 +28,7 @@ export default function GamePlaySelectGameMove({
 
   const queryClient = useQueryClient();
 
-  const { writeContract } = useWriteContract({
+  const { writeContract, isPending } = useWriteContract({
     mutation: {
       async onSuccess(data) {
         toast.success(`Move selected successfully! Transaction Hash: ${data}`, {
@@ -85,16 +85,15 @@ export default function GamePlaySelectGameMove({
         }}
         className="flex flex-col gap-4"
       >
-        <form.Field
-          name="move"
-          children={(field) => (
+        <form.Field name="move">
+          {(field) => (
             <FormSelect
               label="Your Game Move"
               field={field}
               options={gameMoveOptions}
             />
           )}
-        />
+        </form.Field>
 
         <form.Field
           name="agreeToStake"
@@ -103,7 +102,8 @@ export default function GamePlaySelectGameMove({
               !value &&
               'You must stake to join the game, please read the description and confirm.',
           }}
-          children={(field) => (
+        >
+          {(field) => (
             <FormCheckbox field={field}>
               <span>
                 To join the game you must stake{' '}
@@ -119,16 +119,13 @@ export default function GamePlaySelectGameMove({
               </span>
             </FormCheckbox>
           )}
-        />
+        </form.Field>
 
-        <form.Subscribe
-          selector={(state) => [state.isSubmitting]}
-          children={([isSubmitting]) => (
-            <Button type="submit" variant="primary" disabled={isSubmitting}>
-              {isSubmitting ? 'Processing...' : 'Select move'}
-            </Button>
-          )}
-        />
+        <form.Subscribe>
+          <Button type="submit" variant="primary" disabled={isPending}>
+            {isPending ? 'Processing...' : 'Select move'}
+          </Button>
+        </form.Subscribe>
       </form>
     </div>
   );

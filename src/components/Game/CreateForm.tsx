@@ -75,16 +75,15 @@ export default function GameCreateForm({
       }}
     >
       <div className="flex flex-col gap-4">
-        <form.Field
-          name="move"
-          children={(field) => (
+        <form.Field name="move">
+          {(field) => (
             <FormSelect
               label="Your Game Move"
               field={field}
               options={gameMoveOptions}
             />
           )}
-        />
+        </form.Field>
         <form.Field
           name="opponentAddress"
           asyncDebounceMs={500}
@@ -122,9 +121,8 @@ export default function GameCreateForm({
           )}
         </form.Field>
 
-        <form.Subscribe
-          selector={(state) => [state.isSubmitting]}
-          children={([isSubmitting]) => (
+        <form.Subscribe selector={(state) => [state.isSubmitting]}>
+          {([isSubmitting]) => (
             <div>
               <Button
                 className="w-full"
@@ -158,7 +156,7 @@ export default function GameCreateForm({
               </div>
             </div>
           )}
-        />
+        </form.Subscribe>
       </div>
     </form>
   );

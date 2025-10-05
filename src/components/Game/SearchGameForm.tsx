@@ -36,17 +36,17 @@ export default function SearchGameForm() {
             onBlur: ({ value }) => getAddressError(value),
             onChangeAsync: ({ value }) => getAddressError(value),
           }}
-          children={(field) => (
+        >
+          {(field) => (
             <FormInput
               type="text"
               field={field}
               placeholder="Enter Game Address to join"
             />
           )}
-        />
-        <form.Subscribe
-          selector={(state) => [state.isSubmitting]}
-          children={([isSubmitting]) => (
+        </form.Field>
+        <form.Subscribe selector={(state) => [state.isSubmitting]}>
+          {([isSubmitting]) => (
             <Button
               className="mt-2 w-full"
               variant="secondary"
@@ -56,7 +56,7 @@ export default function SearchGameForm() {
               Join Game
             </Button>
           )}
-        />
+        </form.Subscribe>
       </div>
     </form>
   );

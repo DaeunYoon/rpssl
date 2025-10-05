@@ -86,28 +86,30 @@ export default function GamePlaySolveResult({
         }}
         className="flex flex-col gap-4"
       >
-        <form.Field
-          name="move"
-          children={(field) => (
+        <form.Field name="move">
+          {(field) => (
             <FormSelect
               label="Your Game Move"
               field={field}
               options={gameMoveOptions}
             />
           )}
-        />
+        </form.Field>
 
         <form.Field
           name="salt"
           validators={{
             onChange: ({ value }) => getBigIntError(value),
           }}
-          children={(field) => <FormInput label="Salt" field={field} />}
-        />
+        >
+          {(field) => <FormInput label="Salt" field={field} />}
+        </form.Field>
 
-        <Button type="submit" variant="primary" disabled={isPending}>
-          {isPending ? 'Processing...' : 'Solve Game'}
-        </Button>
+        <form.Subscribe>
+          <Button type="submit" variant="primary" disabled={isPending}>
+            {isPending ? 'Processing...' : 'Solve Game'}
+          </Button>
+        </form.Subscribe>
       </form>
 
       <Popup

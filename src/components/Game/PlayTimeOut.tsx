@@ -48,7 +48,8 @@ export default function GamePlayTimeOut({
 
   return (
     <div className="p-2 text-neutral-800 border rounded-lg border-neutral-500">
-      ⚠️ It's been more than {timeOutInMinutes} minutes since the last action.
+      ⚠️ It&apos;s been more than {timeOutInMinutes} minutes since the last
+      action.
       <br />
       {currentPlayer === GamePlayer.Player1 ? (
         <Player1TimeOut
