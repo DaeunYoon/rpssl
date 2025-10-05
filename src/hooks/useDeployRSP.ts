@@ -15,6 +15,7 @@ export interface DeployRSPVariables {
 export interface DeployRSPResult {
   deployedContract: Address;
   salt: bigint;
+  move: GameMove;
 }
 
 type UseDeployRSPOptions = Omit<
@@ -66,7 +67,7 @@ export function useDeployRSP(options?: UseDeployRSPOptions) {
           });
         }
 
-        return { deployedContract, salt };
+        return { deployedContract, salt, move };
       } catch (e) {
         throw new Error('Deployment failed', { cause: e });
       }

@@ -39,3 +39,27 @@ export function getAmountError(
   }
   return undefined;
 }
+
+interface GetBigIntErrorOptions {
+  allowNegative?: boolean;
+}
+
+export function getBigIntError(
+  value?: string | null,
+  options?: GetBigIntErrorOptions,
+) {
+  if (!value) return 'Value is required';
+
+  let convertedValue: bigint;
+  try {
+    convertedValue = BigInt(value);
+  } catch {
+    return 'Value should be integer value';
+  }
+
+  if (convertedValue < BigInt(0) && !options?.allowNegative) {
+    return 'Value cannot be negative';
+  }
+
+  return undefined;
+}

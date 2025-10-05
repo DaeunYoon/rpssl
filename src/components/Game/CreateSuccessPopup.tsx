@@ -1,9 +1,11 @@
 import type { DeployRSPResult } from '@/hooks/useDeployRSP';
+import { GameMove } from '@/utils/constants';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import type { Address } from 'viem';
 import Button from '../base/Button';
 import Card from '../base/Card';
+import DataColumn from '../base/DataColumn';
 import Popup, { type BasePopupProps } from '../base/Popup';
 
 interface GameCreateSuccessPopupProps extends BasePopupProps {
@@ -16,7 +18,7 @@ export default function GameCreateSuccessPopup({
   payload,
 }: GameCreateSuccessPopupProps) {
   function copyDetails(payload: DeployRSPResult) {
-    const details = `Contract Address: ${payload.deployedContract}, Salt: ${payload.salt.toString()}`;
+    const details = `Contract Address: ${payload.deployedContract}, Salt: ${payload.salt.toString()}, Move: ${GameMove[payload.move]}`;
     navigator.clipboard.writeText(details);
     toast.success('Details copied to clipboard');
   }
@@ -35,20 +37,19 @@ export default function GameCreateSuccessPopup({
           </h2>
           <Card className="text-sm text-neutral-600 border border-neutral-300 p-2">
             <p>
-              <span className="mr-1">ℹ️</span> Make sure to save the following
+              <span className="mr-1">⚠️</span> Make sure to save the following
               details, you will need them to play the game!
             </p>
           </Card>
 
-          <div className="break-all">
-            <p>
-              <span className="font-semibold">Contract Address:</span>{' '}
-              {payload.deployedContract}
-            </p>
-            <p>
-              <span className="font-semibold">Salt:</span>{' '}
-              {payload.salt.toString()}
-            </p>
+          <div>
+            <DataColumn
+              label="Contract Address"
+              link={`https://sepolia.etherscan.io/address/${payload.deployedContract}`}
+              value={payload.deployedContract}
+            />
+            <DataColumn label="Salt" value={payload.salt.toString()} />
+            <DataColumn label="Move" value={GameMove[payload.move]} />
           </div>
 
           <div className="flex gap-4 w-full">

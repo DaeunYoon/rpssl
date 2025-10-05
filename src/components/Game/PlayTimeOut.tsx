@@ -1,5 +1,6 @@
 import { RSPAbi } from '@/contracts/RSP';
 import { getRSPStateQueryKey, type RSPState } from '@/hooks/useRSPState';
+import { convertSecondsToMinutes } from '@/utils';
 import { GamePlayer, GameStatus } from '@/utils/constants';
 import { checkGameTimeOut } from '@/utils/game';
 import { useQueryClient } from '@tanstack/react-query';
@@ -20,7 +21,7 @@ export default function GamePlayTimeOut({
 }: GamePlayTimeOutProps) {
   const isStakeEmpty = state.stake === BigInt(0);
   const isTimeOut = checkGameTimeOut(state);
-  const timeOutInMinutes = (state.TIMEOUT / BigInt(60)).toLocaleString();
+  const timeOutInMinutes = convertSecondsToMinutes(state.TIMEOUT);
   const queryClient = useQueryClient();
 
   const { writeContract, isPending } = useWriteContract({
@@ -28,6 +29,7 @@ export default function GamePlayTimeOut({
       async onSuccess(data) {
         toast.success(
           `Time out called successfully! Transaction Hash: ${data}`,
+          { duration: 5000 },
         );
 
         await queryClient.invalidateQueries({

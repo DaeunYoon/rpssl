@@ -123,13 +123,13 @@ export default function GameCreateForm({
         </form.Field>
 
         <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit, isSubmitting]) => (
+          selector={(state) => [state.isSubmitting]}
+          children={([isSubmitting]) => (
             <div>
               <Button
                 className="w-full"
                 variant="primary"
-                disabled={!canSubmit || isSubmitting}
+                disabled={isSubmitting}
                 type="submit"
               >
                 {isSubmitting ? 'Creating New Game...' : 'Create New Game'}

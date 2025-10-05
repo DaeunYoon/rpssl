@@ -45,13 +45,13 @@ export default function SearchGameForm() {
           )}
         />
         <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit, isSubmitting]) => (
+          selector={(state) => [state.isSubmitting]}
+          children={([isSubmitting]) => (
             <Button
               className="mt-2 w-full"
               variant="secondary"
               type="submit"
-              disabled={!canSubmit || isSubmitting}
+              disabled={isSubmitting}
             >
               Join Game
             </Button>

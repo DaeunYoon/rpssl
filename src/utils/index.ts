@@ -35,6 +35,11 @@ export function safeStringify(value: unknown, space = 2): string {
   }
 }
 
+export function convertSecondsToMinutes(seconds: bigint): string {
+  const minute = seconds / BigInt(60);
+  return minute.toLocaleString(undefined, { maximumFractionDigits: 0 });
+}
+
 export function createHashedMove(move: GameMove) {
   const salt = createUint256Salt();
   const hashedMove = keccak256(

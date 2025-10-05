@@ -28,10 +28,12 @@ export default function GamePlaySelectGameMove({
 
   const queryClient = useQueryClient();
 
-  const { writeContract, isPending } = useWriteContract({
+  const { writeContract } = useWriteContract({
     mutation: {
       async onSuccess(data) {
-        toast.success(`Move selected successfully! Transaction Hash: ${data}`);
+        toast.success(`Move selected successfully! Transaction Hash: ${data}`, {
+          duration: 5000,
+        });
 
         await queryClient.invalidateQueries({
           queryKey: getRSPStateQueryKey(state.address),
@@ -54,6 +56,7 @@ export default function GamePlaySelectGameMove({
         abi: RSPAbi,
         functionName: 'play',
         args: [value.move],
+        value: state.stake,
       });
     },
   });
@@ -66,7 +69,7 @@ export default function GamePlaySelectGameMove({
     return (
       <div>
         Waiting for <span className="font-semibold">player 1</span> to make a
-        move ...
+        next move ...
       </div>
     );
   }
@@ -118,9 +121,14 @@ export default function GamePlaySelectGameMove({
           )}
         />
 
-        <Button type="submit" variant="primary" disabled={isPending}>
-          {isPending ? 'Processing...' : 'Select move'}
-        </Button>
+        <form.Subscribe
+          selector={(state) => [state.isSubmitting]}
+          children={([isSubmitting]) => (
+            <Button type="submit" variant="primary" disabled={isSubmitting}>
+              {isSubmitting ? 'Processing...' : 'Select move'}
+            </Button>
+          )}
+        />
       </form>
     </div>
   );

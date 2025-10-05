@@ -1,3 +1,5 @@
+import { cn } from '@/utils';
+
 type Value = string | bigint | null;
 interface DataColumnProps<T extends Value, R extends Value> {
   label: string;
@@ -6,6 +8,7 @@ interface DataColumnProps<T extends Value, R extends Value> {
   hideIfEmpty?: boolean;
   value: T;
   suffix?: string;
+  className?: string;
 }
 
 function DataColumn<T extends Value, R extends Value>({
@@ -15,6 +18,7 @@ function DataColumn<T extends Value, R extends Value>({
   link,
   hideIfEmpty,
   suffix,
+  className,
 }: DataColumnProps<T, R>) {
   const formattedValue = formatter ? formatter(value) : value;
 
@@ -27,7 +31,7 @@ function DataColumn<T extends Value, R extends Value>({
     : undefined;
   return (
     <div
-      className="flex gap-2"
+      className={cn('flex gap-2', className)}
       title={valueInString ? String(valueInString) : undefined}
     >
       <span className="font-semibold">{label}: </span>
@@ -36,12 +40,12 @@ function DataColumn<T extends Value, R extends Value>({
           href={link}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-500 hover:underline"
+          className="text-blue-500 hover:underline break-all"
         >
           {valueInString}
         </a>
       ) : (
-        <span>{valueInString}</span>
+        <span className="break-all">{valueInString}</span>
       )}
     </div>
   );
