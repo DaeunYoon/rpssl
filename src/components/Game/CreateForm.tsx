@@ -1,7 +1,7 @@
 import Button from '@/components/base/Button';
 import type { DeployRSPVariables } from '@/hooks/useDeployRSP';
 import { useEstimateFeeDeployRSP } from '@/hooks/useEstimateFeeDeployRSP';
-import { GameChoice, gameChoiceOptions } from '@/utils/constants';
+import { GameMove, gameMoveOptions } from '@/utils/constants';
 import { getAddressError, getAmountError } from '@/utils/form';
 import { useForm } from '@tanstack/react-form';
 import { formatEther, isAddress } from 'viem';
@@ -16,7 +16,7 @@ export default function GameCreateForm({
 }) {
   const form = useForm({
     defaultValues: {
-      choice: GameChoice.Rock,
+      move: GameMove.Rock,
       opponentAddress: '',
       amount: 0.01,
     },
@@ -34,7 +34,7 @@ export default function GameCreateForm({
       }
 
       return onSubmit({
-        choice: value.choice,
+        move: value.move,
         opponentAddress: trimmedAddress,
         amount: value.amount.toString(),
       });
@@ -76,12 +76,12 @@ export default function GameCreateForm({
     >
       <div className="flex flex-col gap-4">
         <form.Field
-          name="choice"
+          name="move"
           children={(field) => (
             <FormSelect
-              label="Your Game Choice"
+              label="Your Game Move"
               field={field}
-              options={gameChoiceOptions}
+              options={gameMoveOptions}
             />
           )}
         />

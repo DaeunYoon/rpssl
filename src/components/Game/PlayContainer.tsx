@@ -1,10 +1,12 @@
 import type { RSPState } from '@/hooks/useRSPState';
-import { GamePlayer, GameStatus } from '@/utils/constants';
-import { checkGamePlayer, checkGameStatus } from '@/utils/game';
+import { GamePlayer } from '@/utils/constants';
+import { checkGamePlayer } from '@/utils/game';
 import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';
 import Button from '../base/Button';
 import GamePlayTimeOut from './PlayTimeOut';
+import GameSelectGameMove from './SelectGameMove';
+import GameSolveResult from './SolveResult';
 
 export default function GamePlayContainer({ state }: { state: RSPState }) {
   const { address: userAddress } = useAccount();
@@ -34,7 +36,6 @@ export default function GamePlayContainer({ state }: { state: RSPState }) {
     );
   }
 
-  const currentGameStatus: GameStatus = checkGameStatus(state);
   const isStakeEmpty = state.stake === BigInt(0);
 
   return (
@@ -50,23 +51,12 @@ export default function GamePlayContainer({ state }: { state: RSPState }) {
         </div>
       )}
 
-      <GamePlayTimeOut
-        state={state}
-        currentPlayer={currentPlayer}
-        currentGameStatus={currentGameStatus}
-      />
+      <GamePlayTimeOut state={state} currentPlayer={currentPlayer} />
 
-      <h4 className="font-semibold">Next action waiting for you!</h4>
       {currentPlayer === GamePlayer.Player1 ? (
-        currentGameStatus === GameStatus.C2Selected ? (
-          <p>Solve</p>
-        ) : (
-          'Waiting for player 2 to make a move ...'
-        )
-      ) : currentGameStatus === GameStatus.Created ? (
-        <p>Join</p>
+        <GameSolveResult state={state} currentPlayer={currentPlayer} />
       ) : (
-        'Waiting for player 1 to make a move ...'
+        <GameSelectGameMove state={state} currentPlayer={currentPlayer} />
       )}
     </div>
   );

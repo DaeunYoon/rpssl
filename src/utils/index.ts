@@ -1,7 +1,7 @@
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { encodePacked, isAddress, keccak256 } from 'viem';
-import { GameChoice } from './constants';
+import { GameMove } from './constants';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -35,11 +35,11 @@ export function safeStringify(value: unknown, space = 2): string {
   }
 }
 
-export function createHashedChoice(choice: GameChoice) {
+export function createHashedMove(move: GameMove) {
   const salt = createUint256Salt();
-  const hashedChoice = keccak256(
-    encodePacked(['uint8', 'uint256'], [choice, salt]),
+  const hashedMove = keccak256(
+    encodePacked(['uint8', 'uint256'], [move, salt]),
   );
 
-  return { hashedChoice, salt };
+  return { hashedMove, salt };
 }

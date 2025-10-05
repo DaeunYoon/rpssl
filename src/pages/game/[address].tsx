@@ -53,7 +53,7 @@ export default function GameDetailPage() {
         <Card>
           The address is not a valid RSP contract. 🧐
           <br />
-          Please check if the address is correct or contract is on the right
+          Please check if the address is correct or the contract is on the right
           network.
         </Card>
       </Layout>

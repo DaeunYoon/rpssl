@@ -1,5 +1,5 @@
 import { RSPAbi, RSPByteCode } from '@/contracts/RSP';
-import { GameChoice } from '@/utils/constants';
+import { GameMove } from '@/utils/constants';
 import { config } from '@/wagmi';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -13,7 +13,7 @@ import { sepolia } from 'viem/chains';
 import { usePublicClient } from 'wagmi';
 
 export interface DeployRSPVariables {
-  choice: GameChoice;
+  choice: GameMove;
   opponentAddress: Address;
   amount: string;
 }

@@ -1,6 +1,6 @@
 import { SelectOption } from '@/components/base/form/Select';
 
-export enum GameChoice {
+export enum GameMove {
   Null,
   Rock,
   Paper,
@@ -9,22 +9,22 @@ export enum GameChoice {
   Lizard,
 }
 
-const gameChoiceIcons: Record<GameChoice, string> = {
-  [GameChoice.Null]: '❓',
-  [GameChoice.Rock]: '🪨',
-  [GameChoice.Paper]: '📄',
-  [GameChoice.Scissors]: '✂️',
-  [GameChoice.Spock]: '🖖',
-  [GameChoice.Lizard]: '🦎',
+const gameMoveIcons: Record<GameMove, string> = {
+  [GameMove.Null]: '❓',
+  [GameMove.Rock]: '🪨',
+  [GameMove.Paper]: '📄',
+  [GameMove.Scissors]: '✂️',
+  [GameMove.Spock]: '🖖',
+  [GameMove.Lizard]: '🦎',
 };
 
-export const gameChoiceOptions = (
-  Object.entries(GameChoice).filter(
+export const gameMoveOptions = (
+  Object.entries(GameMove).filter(
     ([key]) => isNaN(Number(key)) && key !== 'Null',
-  ) as [string, GameChoice][]
+  ) as [string, GameMove][]
 ).map(
-  ([key, value]): SelectOption<GameChoice> => ({
-    label: `${gameChoiceIcons[value]} ${key}`,
+  ([key, value]): SelectOption<GameMove> => ({
+    label: `${gameMoveIcons[value]} ${key}`,
     value: value,
   }),
 );

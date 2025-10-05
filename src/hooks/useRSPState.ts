@@ -1,5 +1,6 @@
 import { RSPAbi } from '@/contracts/RSP';
-import { GameChoice } from '@/utils/constants';
+import { GameMove, GameStatus } from '@/utils/constants';
+import { checkGameStatus } from '@/utils/game';
 import { useQuery } from '@tanstack/react-query';
 import type { Address, Hash } from 'viem';
 import { usePublicClient } from 'wagmi';
@@ -12,8 +13,9 @@ export interface RSPState {
   c1Hash: Hash;
   lastAction: bigint;
   TIMEOUT: bigint;
-  c2: GameChoice;
+  c2: GameMove;
   balance: bigint;
+  currentGameStatus: GameStatus;
 }
 
 export function getRSPStateQueryKey(address: Address | undefined) {
@@ -86,8 +88,9 @@ export function useRSPState(address?: Address) {
         c1Hash,
         lastAction,
         TIMEOUT,
-        c2: c2 as GameChoice,
+        c2: c2 as GameMove,
         balance,
+        currentGameStatus: checkGameStatus(c2 as GameMove),
       } satisfies RSPState;
     },
     enabled: Boolean(publicClient && address),

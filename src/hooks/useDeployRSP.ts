@@ -1,13 +1,13 @@
 import { RSPAbi, RSPByteCode } from '@/contracts/RSP';
-import { createHashedChoice } from '@/utils';
-import { GameChoice } from '@/utils/constants';
+import { createHashedMove } from '@/utils';
+import { GameMove } from '@/utils/constants';
 import { config } from '@/wagmi';
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { Address, parseEther } from 'viem';
 import { usePublicClient, useWalletClient } from 'wagmi';
 
 export interface DeployRSPVariables {
-  choice: GameChoice;
+  move: GameMove;
   opponentAddress: Address;
   amount: string;
 }
@@ -33,7 +33,7 @@ export function useDeployRSP(options?: UseDeployRSPOptions) {
 
   const { mutate, mutateAsync, ...result } = useMutation({
     mutationFn: async ({
-      choice,
+      move,
       opponentAddress,
       amount,
     }: DeployRSPVariables) => {
@@ -45,12 +45,12 @@ export function useDeployRSP(options?: UseDeployRSPOptions) {
         throw new Error('Public client not available');
       }
 
-      const { hashedChoice, salt } = createHashedChoice(choice);
+      const { hashedMove, salt } = createHashedMove(move);
       try {
         const deployHash = await walletClient.deployContract({
           abi: RSPAbi,
           bytecode: RSPByteCode,
-          args: [hashedChoice, opponentAddress] as const,
+          args: [hashedMove, opponentAddress] as const,
           value: parseEther(amount),
           ...config,
         });

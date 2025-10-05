@@ -1,12 +1,12 @@
 import type { RSPState } from '@/hooks/useRSPState';
-import { GameChoice, GamePlayer, GameStatus } from '@/utils/constants';
+import { GameMove, GamePlayer, GameStatus } from '@/utils/constants';
 
 export function checkGameTimeOut(state: RSPState): boolean {
   return state.lastAction + state.TIMEOUT < Date.now() / 1000;
 }
 
-export function checkGameStatus(state: RSPState): GameStatus {
-  if (state.c2 === GameChoice.Null) {
+export function checkGameStatus(c2Selection: GameMove): GameStatus {
+  if (c2Selection === GameMove.Null) {
     return GameStatus.Created;
   }
   return GameStatus.C2Selected;

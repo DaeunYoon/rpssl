@@ -12,13 +12,11 @@ import Button from '../base/Button';
 interface GamePlayTimeOutProps {
   state: RSPState;
   currentPlayer: GamePlayer;
-  currentGameStatus: GameStatus;
 }
 
 export default function GamePlayTimeOut({
   state,
   currentPlayer,
-  currentGameStatus,
 }: GamePlayTimeOutProps) {
   const isStakeEmpty = state.stake === BigInt(0);
   const isTimeOut = checkGameTimeOut(state);
@@ -53,14 +51,14 @@ export default function GamePlayTimeOut({
       {currentPlayer === GamePlayer.Player1 ? (
         <Player1TimeOut
           address={state.address}
-          currentGameStatus={currentGameStatus}
+          currentGameStatus={state.currentGameStatus}
           writeContract={writeContract}
           isPending={isPending}
         />
       ) : (
         <Player2TimeOut
           address={state.address}
-          currentGameStatus={currentGameStatus}
+          currentGameStatus={state.currentGameStatus}
           writeContract={writeContract}
           isPending={isPending}
         />
