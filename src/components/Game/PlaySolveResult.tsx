@@ -1,20 +1,24 @@
 import { RSPState } from '@/hooks/useRSPState';
 import { GamePlayer, GameStatus } from '@/utils/constants';
 
-interface GameSolveResultProps {
+interface GamePlaySolveResultProps {
   currentPlayer: GamePlayer;
   state: RSPState;
 }
-export default function GameSolveResult({
+export default function GamePlaySolveResult({
   currentPlayer,
   state,
-}: GameSolveResultProps) {
+}: GamePlaySolveResultProps) {
   if (currentPlayer !== GamePlayer.Player1) {
     return null;
   }
 
   if (state.currentGameStatus !== GameStatus.C2Selected) {
-    return <div>Waiting for player 2 to make a move ...</div>;
+    return (
+      <div>
+        Waiting for <span className="font-semibold">player 2</span> to make a
+      </div>
+    );
   }
 
   return <div>Let's select move</div>;

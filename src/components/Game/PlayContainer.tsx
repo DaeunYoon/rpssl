@@ -4,9 +4,9 @@ import { checkGamePlayer } from '@/utils/game';
 import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';
 import Button from '../base/Button';
+import GamePlaySelectGameMove from './PlaySelectGameMove';
+import GamePlaySolveResult from './PlaySolveResult';
 import GamePlayTimeOut from './PlayTimeOut';
-import GameSelectGameMove from './SelectGameMove';
-import GameSolveResult from './SolveResult';
 
 export default function GamePlayContainer({ state }: { state: RSPState }) {
   const { address: userAddress } = useAccount();
@@ -39,7 +39,7 @@ export default function GamePlayContainer({ state }: { state: RSPState }) {
   const isStakeEmpty = state.stake === BigInt(0);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       {isStakeEmpty && (
         <div className="p-2 text-neutral-800 border rounded-lg border-neutral-500">
           ⚠️ There is no stake in this game. This usually means the game has
@@ -54,9 +54,9 @@ export default function GamePlayContainer({ state }: { state: RSPState }) {
       <GamePlayTimeOut state={state} currentPlayer={currentPlayer} />
 
       {currentPlayer === GamePlayer.Player1 ? (
-        <GameSolveResult state={state} currentPlayer={currentPlayer} />
+        <GamePlaySolveResult state={state} currentPlayer={currentPlayer} />
       ) : (
-        <GameSelectGameMove state={state} currentPlayer={currentPlayer} />
+        <GamePlaySelectGameMove state={state} currentPlayer={currentPlayer} />
       )}
     </div>
   );
