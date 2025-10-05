@@ -71,6 +71,32 @@ const Home: NextPage = () => {
               </DisclosurePanel>
             </Disclosure>
           </div>
+
+          <div>
+            <Disclosure>
+              <DisclosureButton className="text-lg font-medium hover:underline">
+                What is the rule of RPSSL?
+              </DisclosureButton>
+              <DisclosurePanel className="text-gray-600 mt-2">
+                <ul className="list-disc list-inside space-y-1">
+                  <li>Rock crushes Scissors and crushes Lizard</li>
+                  <li>Paper covers Rock and disproves Spock</li>
+                  <li>Scissors cuts Paper and decapitates Lizard</li>
+                  <li>Lizard eats Paper and poisons Spock</li>
+                  <li>Spock smashes Scissors and vaporizes Rock</li>
+                </ul>
+                <p className="mt-2">
+                  If both players choose the same move, the game ends in a tie
+                  and neither player wins.
+                  <br />
+                  If a player does not make their move within <b>5 minutes</b>,
+                  the other player can call a timeout to claim the stake or end
+                  the game. This ensures the game doesn't get stalled
+                  indefinitely.
+                </p>
+              </DisclosurePanel>
+            </Disclosure>
+          </div>
         </Card>
       </div>
     </Layout>
