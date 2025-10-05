@@ -91,7 +91,7 @@ const Home: NextPage = () => {
                   <br />
                   If a player does not make their move within <b>5 minutes</b>,
                   the other player can call a timeout to claim the stake or end
-                  the game. This ensures the game doesn't get stalled
+                  the game. This ensures the game doesn&apos;t get stalled
                   indefinitely.
                 </p>
               </DisclosurePanel>
