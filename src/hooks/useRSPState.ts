@@ -1,9 +1,10 @@
 import { RSPAbi } from '@/contracts/RSP';
 import { GameMove, GameStatus } from '@/utils/constants';
 import { checkGameStatus } from '@/utils/game';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import type { Address, Hash } from 'viem';
-import { usePublicClient } from 'wagmi';
+import { useBlockNumber, usePublicClient } from 'wagmi';
 
 export interface RSPState {
   address: Address;
@@ -19,11 +20,18 @@ export interface RSPState {
 }
 
 export function getRSPStateQueryKey(address: Address | undefined) {
-  return ['rspState', address] as const;
+  return ['rspState', address];
 }
 
 export function useRSPState(address?: Address) {
+  const queryClient = useQueryClient();
   const publicClient = usePublicClient();
+  const { data: blockNumber } = useBlockNumber({ watch: true });
+
+  // Fetch new state every block
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: getRSPStateQueryKey(address) });
+  }, [blockNumber, queryClient]);
 
   const rspState = useQuery({
     queryKey: getRSPStateQueryKey(address),
