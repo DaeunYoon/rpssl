@@ -32,6 +32,7 @@ export const gameMoveOptions = (
 export enum GameStatus {
   Created,
   C2Selected,
+  Finished,
 }
 
 export enum GamePlayer {

@@ -5,9 +5,15 @@ export function checkGameTimeOut(state: RSPState): boolean {
   return state.lastAction + state.TIMEOUT < Date.now() / 1000;
 }
 
-export function checkGameStatus(c2Selection: GameMove): GameStatus {
+export function checkGameStatus(
+  c2Selection: GameMove,
+  balance: bigint,
+): GameStatus {
   if (c2Selection === GameMove.Null) {
     return GameStatus.Created;
+  }
+  if (balance === BigInt(0)) {
+    return GameStatus.Finished;
   }
   return GameStatus.C2Selected;
 }

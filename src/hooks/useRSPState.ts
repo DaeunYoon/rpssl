@@ -98,7 +98,7 @@ export function useRSPState(address?: Address) {
         TIMEOUT,
         c2: c2 as GameMove,
         balance,
-        currentGameStatus: checkGameStatus(c2 as GameMove),
+        currentGameStatus: checkGameStatus(c2 as GameMove, balance),
       } satisfies RSPState;
     },
     enabled: Boolean(publicClient && address),

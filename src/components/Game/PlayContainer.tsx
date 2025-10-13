@@ -1,5 +1,5 @@
 import type { RSPState } from '@/hooks/useRSPState';
-import { GamePlayer } from '@/utils/constants';
+import { GamePlayer, GameStatus } from '@/utils/constants';
 import { checkGamePlayer } from '@/utils/game';
 import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';
@@ -36,11 +36,9 @@ export default function GamePlayContainer({ state }: { state: RSPState }) {
     );
   }
 
-  const isStakeEmpty = state.stake === BigInt(0);
-
   return (
     <div className="flex flex-col gap-4">
-      {isStakeEmpty && (
+      {state.currentGameStatus === GameStatus.Finished ? (
         <div className="p-2 text-neutral-800 border rounded-lg border-neutral-500">
           ⚠️ There is no stake in this game. This usually means the game has
           already finished, or it was created without any ETH at stake.
@@ -49,14 +47,19 @@ export default function GamePlayContainer({ state }: { state: RSPState }) {
             winning this game will not reward you with any ETH.
           </span>
         </div>
-      )}
-
-      <GamePlayTimeOut state={state} currentPlayer={currentPlayer} />
-
-      {currentPlayer === GamePlayer.Player1 ? (
-        <GamePlaySolveResult state={state} currentPlayer={currentPlayer} />
       ) : (
-        <GamePlaySelectGameMove state={state} currentPlayer={currentPlayer} />
+        <>
+          <GamePlayTimeOut state={state} currentPlayer={currentPlayer} />
+
+          {currentPlayer === GamePlayer.Player1 ? (
+            <GamePlaySolveResult state={state} currentPlayer={currentPlayer} />
+          ) : (
+            <GamePlaySelectGameMove
+              state={state}
+              currentPlayer={currentPlayer}
+            />
+          )}
+        </>
       )}
     </div>
   );
